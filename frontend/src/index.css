@@ -1,0 +1,86 @@
+/* Dark Shield — Master Stylesheet */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import "tailwindcss";
+
+/* ── Custom Theme Tokens ────────────────────────────────────────────────────── */
+@theme {
+  --color-ds-bg: #0B1020;
+  --color-ds-surface: #111827;
+  --color-ds-surface-2: #1E293B;
+  --color-ds-border: #1E293B;
+  --color-ds-text: #F8FAFC;
+  --color-ds-text-muted: #94A3B8;
+  --color-ds-blue: #2563EB;
+  --color-ds-blue-light: #3B82F6;
+  --color-ds-cyan: #06B6D4;
+  --color-ds-green: #22C55E;
+  --color-ds-amber: #F59E0B;
+  --color-ds-red: #EF4444;
+  --color-ds-purple: #8B5CF6;
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+/* ── Base ───────────────────────────────────────────────────────────────────── */
+@layer base {
+  * { box-sizing: border-box; }
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  body {
+    font-family: var(--font-sans);
+    background: var(--color-ds-bg);
+    color: var(--color-ds-text);
+    min-height: 100vh;
+    margin: 0;
+  }
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
+}
+
+/* ── Glassmorphism Utility ──────────────────────────────────────────────────── */
+@layer utilities {
+  .glass {
+    background: rgba(17, 24, 39, 0.6);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+  }
+  .glass-hover:hover {
+    background: rgba(17, 24, 39, 0.8);
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+  .gradient-border {
+    position: relative;
+  }
+  .gradient-border::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(135deg, #2563EB, #06B6D4);
+    mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+  .animate-scan {
+    animation: scan 2s ease-in-out infinite;
+  }
+  @keyframes scan {
+    0%, 100% { opacity: 0.4; transform: translateY(0); }
+    50% { opacity: 1; transform: translateY(-4px); }
+  }
+  .animate-pulse-glow {
+    animation: pulse-glow 2s ease-in-out infinite;
+  }
+  @keyframes pulse-glow {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(37,99,235,.4); }
+    50% { box-shadow: 0 0 20px 4px rgba(37,99,235,.2); }
+  }
+  .trust-ring {
+    transition: stroke-dashoffset 1.2s cubic-bezier(.4,0,.2,1);
+  }
+}
+
