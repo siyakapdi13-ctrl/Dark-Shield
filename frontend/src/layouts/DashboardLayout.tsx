@@ -1,10 +1,12 @@
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import {
   Shield, LayoutDashboard, Search, BarChart3, History, MessageCircle,
-  Settings, Menu, X, ChevronRight, User
+  Settings, Menu, X, ChevronRight, User, LogOut
 } from 'lucide-react';
 import { useState } from 'react';
 import clsx from 'clsx';
+import { useSignOut } from '../hooks/useSignOut';
+import { useCurrentUser } from '../hooks/useCurrentUser';
 
 const NAV = [
   { to: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
@@ -18,6 +20,8 @@ const NAV = [
 export default function DashboardLayout() {
   const { pathname } = useLocation();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const signOut = useSignOut();
+  const user = useCurrentUser();
 
   return (
     <div className="flex min-h-screen">
@@ -69,13 +73,30 @@ export default function DashboardLayout() {
 
         <div className="px-4 py-4 border-t border-ds-border">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-full bg-ds-blue/10 flex items-center justify-center">
-              <User className="w-4 h-4 text-ds-blue" />
+            {user.imageUrl ? (
+              <img
+                src={user.imageUrl}
+                alt={user.fullName}
+                className="w-8 h-8 rounded-full object-cover"
+                referrerPolicy="no-referrer"
+              />
+            ) : (
+              <div className="w-8 h-8 rounded-full bg-ds-blue/10 flex items-center justify-center">
+                <User className="w-4 h-4 text-ds-blue" />
+              </div>
+            )}
+            <div className="min-w-0 flex-1">
+              <p className="text-xs font-medium truncate">{user.fullName}</p>
+              <p className="text-[10px] text-ds-text-muted truncate">{user.email}</p>
             </div>
-            <div className="min-w-0">
-              <p className="text-xs font-medium truncate">Demo User</p>
-              <p className="text-[10px] text-ds-text-muted truncate">demo@darkshield.app</p>
-            </div>
+            <button
+              id="sign-out-button"
+              onClick={signOut}
+              title="Sign out"
+              className="w-8 h-8 rounded-lg flex items-center justify-center text-ds-text-muted hover:text-ds-red hover:bg-ds-red/10 transition-all duration-200 cursor-pointer"
+            >
+              <LogOut className="w-4 h-4" />
+            </button>
           </div>
         </div>
       </aside>
